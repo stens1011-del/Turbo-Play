@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Дата по Москве</title>
+</head>
+<body>
+  <span id="date"></span>
+  <script>
+    const dateElement = document.getElementById('date');
+
+    function updateDate() {
+      const parts = new Intl.DateTimeFormat('ru-RU', {
+        timeZone: 'Europe/Moscow',
+        day: '2-digit',
+        month: '2-digit'
+      }).formatToParts(new Date());
+
+      const day = parts.find(part => part.type === 'day').value;
+      const month = parts.find(part => part.type === 'month').value;
+      dateElement.textContent = `${day}.${month}`;
+    }
+
+    updateDate();
+    setInterval(updateDate, 1000);
+  </script>
+</body>
+</html>
