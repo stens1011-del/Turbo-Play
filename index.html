@@ -6,24 +6,53 @@
   <title>Дата по Москве</title>
 </head>
 <body>
-  <span id="date"></span>
+  <span id="date">--.--</span>
   <script>
     const dateElement = document.getElementById('date');
 
-    function updateDate() {
-      const parts = new Intl.DateTimeFormat('ru-RU', {
-        timeZone: 'Europe/Moscow',
-        day: '2-digit',
-        month: '2-digit'
-      }).formatToParts(new Date());
+    let moscowTimeAtSync = null;
+    let monotonicTimeAtSync = null;
 
-      const day = parts.find(part => part.type === 'day').value;
-      const month = parts.find(part => part.type === 'month').value;
-      dateElement.textContent = `${day}.${month}`;
+    function showDate() {
+      if (moscowTimeAtSync === null) return;
+
+      // performance.now() не зависит от изменения системных часов.
+      const elapsed = performance.now() - monotonicTimeAtSync;
+      const currentMoscowTime = new Date(moscowTimeAtSync + elapsed);
+
+      const day = String(currentMoscowTime.getUTCDate()).padStart(2, '0');
+      const month = String(currentMoscowTime.getUTCMonth() + 1).padStart(2, '0');
+      dateElement.textContent = day + '.' + month;
     }
 
-    updateDate();
-    setInterval(updateDate, 1000);
+    async function syncMoscowTime() {
+      try {
+        const response = await fetch(
+          'https://timeapi.io/api/Time/current/zone?timeZone=Europe%2FMoscow',
+          { cache: 'no-store' }
+        );
+        if (!response.ok) throw new Error('Time service unavailable');
+
+        const data = await response.json();
+
+        // API отдаёт компоненты времени уже в часовом поясе Москвы.
+        // Собираем их как UTC-компоненты, чтобы не зависеть от зоны устройства.
+        moscowTimeAtSync = Date.UTC(
+          data.year, data.month - 1, data.day,
+          data.hour, data.minute, data.seconds,
+          data.milliSeconds || 0
+        );
+        monotonicTimeAtSync = performance.now();
+        showDate();
+      } catch (error) {
+        // Не подменяем время локальными часами: ждём успешной синхронизации.
+        if (moscowTimeAtSync === null) dateElement.textContent = '--.--';
+      }
+    }
+
+    syncMoscowTime();
+    setInterval(showDate, 1000);
+    setInterval(syncMoscowTime, 10 * 60 * 1000);
   </script>
 </body>
 </html>
