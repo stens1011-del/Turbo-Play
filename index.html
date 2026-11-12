@@ -1,186 +1,973 @@
+
 <!DOCTYPE html>
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Turbo Play</title>
+
 <style>
-:root{--bg:#0b111a;--panel:#111c29;--panel2:#162638;--line:#263b50;--text:#edf5ff;--muted:#9aafc4;--blue:#1da7df;--cyan:#55d4ed}
-*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 70% 0%,#18344b 0,transparent 42%),#0b111a;color:var(--text);font:15px "Segoe UI",Arial,sans-serif;min-height:100vh}
-button,a{font:inherit}.shell{max-width:1440px;margin:auto;min-height:100vh;background:linear-gradient(110deg,rgba(7,15,23,.97),rgba(10,20,31,.92))}
-.top{height:72px;display:flex;align-items:center;gap:28px;padding:0 34px;border-bottom:1px solid #23384b;background:rgba(7,13,20,.8);position:sticky;top:0;z-index:5;backdrop-filter:blur(14px)}
-.brand{font-size:25px;font-weight:900;letter-spacing:1.5px;color:#fff;text-decoration:none}.brand span{color:var(--cyan)}
-.nav{display:flex;gap:8px;flex:1}.nav button,.tab{border:1px solid transparent;color:#c9d7e4;background:transparent;padding:11px 16px;border-radius:5px;cursor:pointer}.nav button:hover,.nav button.active,.tab.active{background:linear-gradient(#1d759c,#12516f);border-color:#3ab5db;color:#fff}
-.profile{color:var(--muted);font-size:13px}.layout{display:grid;grid-template-columns:220px 1fr;min-height:calc(100vh - 72px)}
-.side{padding:30px 18px;border-right:1px solid #203448;background:rgba(8,16,25,.55)}.side h3{font-size:11px;color:#718ba3;text-transform:uppercase;letter-spacing:1.6px;margin:0 12px 14px}.side button{width:100%;text-align:left;border:0;background:transparent;color:#b7c9d9;padding:12px;border-radius:5px;cursor:pointer;margin:2px 0}.side button:hover,.side button.active{background:#18364b;color:#fff}.side .tiny{font-size:12px;color:#718ba3;margin:28px 12px}
-main{padding:28px 34px 50px;min-width:0}.tabs{display:flex;gap:8px;border-bottom:1px solid var(--line);margin-bottom:22px}.tab{border-radius:5px 5px 0 0;padding:10px 18px}
-.hero{min-height:390px;border:1px solid #2c4a60;border-radius:10px;overflow:hidden;position:relative;background:linear-gradient(90deg,rgba(5,14,22,.98) 0%,rgba(5,17,28,.88) 45%,rgba(5,17,28,.15) 100%),radial-gradient(circle at 78% 42%,#28779a 0,#163c57 23%,#102337 48%,#09121d 76%);display:flex;align-items:center;padding:42px}
-.hero:after{content:"";position:absolute;right:7%;top:12%;width:330px;height:250px;border:1px solid rgba(118,224,255,.38);border-radius:18px;transform:rotate(-8deg);box-shadow:0 0 55px rgba(36,177,224,.2),inset 0 0 50px rgba(43,171,214,.12)}
-.window-art{position:absolute;right:11%;top:24%;width:300px;height:190px;border:1px solid rgba(127,220,255,.55);border-radius:9px;background:linear-gradient(145deg,rgba(27,67,92,.9),rgba(7,19,31,.85));box-shadow:0 18px 55px #02070c;transform:rotate(5deg);z-index:1;padding:12px}
-.window-bar{height:12px;border-bottom:1px solid #5aa9c5;display:flex;gap:5px;margin-bottom:16px}.window-bar i{width:6px;height:6px;border-radius:50%;background:#68d8f0}.window-grid{display:grid;grid-template-columns:60px 1fr;gap:10px;height:130px}.window-side{background:#0a1928;border-radius:4px}.window-main{background:linear-gradient(135deg,#1d6586,#0b2438);border-radius:4px;padding:14px}.window-main b{display:block;font-size:18px;color:#dff9ff}.window-main span{display:block;margin-top:12px;height:7px;border-radius:8px;background:#61c7e8;width:72%;box-shadow:0 16px 0 #2d789c,0 32px 0 #23546f}
-.hero-copy{position:relative;z-index:2;max-width:520px}.eyebrow{color:#69d5f2;text-transform:uppercase;font-size:11px;letter-spacing:2px;font-weight:700}.hero h1{font-size:42px;line-height:1.08;margin:12px 0}.hero p{color:#c1d3e2;line-height:1.65;max-width:470px}.actions{display:flex;gap:12px;margin-top:24px;flex-wrap:wrap}.primary,.secondary{display:inline-flex;align-items:center;justify-content:center;text-decoration:none;border-radius:5px;padding:13px 22px;font-weight:700;cursor:pointer}.primary{background:linear-gradient(#38bde8,#117aa9);border:1px solid #79ddf5;color:#fff;box-shadow:0 6px 24px #0a789955}.secondary{background:#14283a;border:1px solid #3a586e;color:#dceaf4}
-.section-head{display:flex;align-items:center;justify-content:space-between;margin:30px 0 14px}.section-head h2{font-size:19px;margin:0}.muted{color:var(--muted);font-size:13px}.cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}.card{border:1px solid var(--line);background:linear-gradient(145deg,#142536,#0e1926);border-radius:7px;overflow:hidden}.card-art{height:115px;background:radial-gradient(circle at 70% 35%,#2a9bc2,#17415d 35%,#0c1a29 75%);display:flex;align-items:center;justify-content:center;font-size:34px;font-weight:900;color:#c8f5ff;letter-spacing:3px}.card-body{padding:14px}.card h3{margin:0 0 6px;font-size:15px}.card p{margin:0;color:var(--muted);font-size:12px;line-height:1.5}
-.page{display:none}.page.active{display:block}.details{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(240px,.7fr);gap:20px}.info-panel{background:#101e2c;border:1px solid var(--line);border-radius:8px;padding:22px}.info-panel h2{margin:0 0 12px}.info-panel p{color:#b4c6d6;line-height:1.7}.spec{display:flex;justify-content:space-between;border-bottom:1px solid #24384a;padding:11px 0;color:#a9bdce;font-size:13px}.spec strong{color:#e8f4ff;font-weight:600}.notice{font-size:12px;color:#8299ad;margin-top:15px}
-footer{border-top:1px solid #203448;margin-top:38px;padding:18px 0;color:#728ba1;font-size:12px}
-@media(max-width:850px){.layout{grid-template-columns:1fr}.side{display:none}.top{padding:0 16px;gap:14px}.profile{display:none}main{padding:20px 16px}.hero{padding:28px;min-height:430px}.window-art,.hero:after{right:-10%;opacity:.45}.cards{grid-template-columns:1fr}.details{grid-template-columns:1fr}.hero h1{font-size:34px}}
+:root {
+  --bg: #020c16;
+  --panel: #071a29;
+  --panel2: #09243a;
+  --line: #123a55;
+  --text: #edf7ff;
+  --muted: #91aabe;
+  --blue: #00b9f5;
+  --cyan: #35dcff;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background:
+    radial-gradient(ellipse at 70% 20%, #06365a 0%, transparent 40%),
+    #020c16;
+  color: var(--text);
+  font: 14px "Segoe UI", Arial, sans-serif;
+}
+
+button, a {
+  font: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+.shell {
+  max-width: 1600px;
+  min-height: 100vh;
+  margin: auto;
+  background: rgba(2, 12, 22, .65);
+}
+
+/* HEADER */
+
+.top {
+  height: 64px;
+  display: flex;
+  align-items: center;
+  gap: 28px;
+  padding: 0 22px;
+  background: rgba(2, 14, 24, .95);
+  border-bottom: 1px solid #12354c;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  backdrop-filter: blur(15px);
+}
+
+.brand {
+  font-size: 27px;
+  font-weight: 1000;
+  font-style: italic;
+  letter-spacing: 1px;
+  color: white;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.brand span {
+  color: var(--blue);
+}
+
+.nav {
+  display: flex;
+  gap: 9px;
+  flex: 1;
+}
+
+.nav button {
+  background: transparent;
+  border: 1px solid transparent;
+  color: #c8d9e6;
+  padding: 11px 17px;
+  border-radius: 8px;
+  transition: .2s;
+}
+
+.nav button:hover,
+.nav button.active {
+  background: linear-gradient(135deg, #075274, #087eaa);
+  border-color: #00baff;
+  color: white;
+  box-shadow: 0 0 18px #00aaff55;
+}
+
+.profile {
+  color: #d1e4f2;
+  white-space: nowrap;
+}
+
+/* LAYOUT */
+
+.layout {
+  display: grid;
+  grid-template-columns: 215px minmax(0, 1fr);
+  min-height: calc(100vh - 64px);
+}
+
+.side {
+  padding: 26px 12px;
+  background: rgba(4, 20, 33, .95);
+  border-right: 1px solid #12354c;
+}
+
+.side h3 {
+  font-size: 11px;
+  color: #819bad;
+  letter-spacing: 1px;
+  margin: 0 10px 13px;
+}
+
+.side button {
+  width: 100%;
+  display: block;
+  text-align: left;
+  background: transparent;
+  border: none;
+  color: #c0d1df;
+  padding: 13px 11px;
+  margin: 3px 0;
+  border-radius: 6px;
+  transition: .2s;
+}
+
+.side button:hover,
+.side button.active {
+  color: white;
+  background: linear-gradient(90deg, #075579, #0b3550);
+  box-shadow: inset 3px 0 var(--blue);
+}
+
+.side .tiny {
+  font-size: 11px;
+  color: #7895a9;
+  border-top: 1px solid #17364b;
+  padding: 22px 5px 10px;
+  margin-top: 18px;
+}
+
+.side .slogan {
+  color: #7895a9;
+  font-size: 12px;
+  font-style: italic;
+  line-height: 1.6;
+  margin-top: 28px;
+}
+
+main {
+  padding: 24px 25px 45px;
+  min-width: 0;
+}
+
+/* TABS */
+
+.tabs {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 19px;
+  border-bottom: 1px solid var(--line);
+}
+
+.tab {
+  background: transparent;
+  color: #b9cedd;
+  border: 1px solid transparent;
+  padding: 11px 18px;
+  border-radius: 7px 7px 0 0;
+}
+
+.tab:hover,
+.tab.active {
+  background: #073c5a;
+  border-color: #087eae;
+  color: white;
+}
+
+/* HERO */
+
+.hero {
+  min-height: 310px;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  padding: 34px;
+  border: 1px solid #155078;
+  border-radius: 12px;
+  background:
+    radial-gradient(circle at 78% 45%, #0876b5 0%, transparent 27%),
+    radial-gradient(circle at 95% 15%, #064c84, transparent 38%),
+    linear-gradient(110deg, #04101d 5%, #06223a 55%, #03101e);
+  box-shadow: 0 0 30px #007db522;
+}
+
+.hero:before {
+  content: "";
+  position: absolute;
+  width: 400px;
+  height: 400px;
+  right: 4%;
+  top: -50px;
+  border-radius: 50%;
+  border: 1px solid #16c6ff33;
+  box-shadow:
+    0 0 60px #00aaff33,
+    inset 0 0 60px #00aaff22;
+}
+
+.hero:after {
+  content: "🎮";
+  position: absolute;
+  right: 10%;
+  top: 50%;
+  transform: translateY(-50%) rotate(-12deg);
+  font-size: clamp(100px, 18vw, 220px);
+  filter: drop-shadow(0 0 25px #00baff);
+  opacity: .95;
+}
+
+.hero-copy {
+  max-width: 550px;
+  position: relative;
+  z-index: 2;
+}
+
+.eyebrow {
+  display: inline-block;
+  padding: 6px 13px;
+  background: #063d5a;
+  border: 1px solid #087ba9;
+  border-radius: 30px;
+  color: var(--cyan);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.hero h1 {
+  font-size: clamp(34px, 4vw, 48px);
+  font-weight: 900;
+  line-height: 1.08;
+  margin: 17px 0 12px;
+  font-style: italic;
+}
+
+.hero h1 span {
+  color: var(--blue);
+}
+
+.hero p {
+  color: #c4d7e6;
+  line-height: 1.6;
+  max-width: 460px;
+  font-size: 15px;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 22px;
+}
+
+.primary,
+.secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 19px;
+  border-radius: 9px;
+  font-weight: 700;
+  text-decoration: none;
+  transition: .2s;
+}
+
+.primary {
+  color: white;
+  background: linear-gradient(135deg, #00c5fa, #0085c5);
+  border: 1px solid #47dfff;
+  box-shadow: 0 0 20px #00aaff55;
+}
+
+.primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 0 30px #00baff99;
+}
+
+.secondary {
+  color: #e1f5ff;
+  background: #09273c;
+  border: 1px solid #2388ae;
+}
+
+.secondary:hover {
+  background: #0b4564;
+}
+
+/* SECTION HEADINGS */
+
+.section-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin: 27px 3px 15px;
+}
+
+.section-head h2 {
+  font-size: 20px;
+  margin: 0;
+}
+
+.muted {
+  font-size: 12px;
+  color: var(--muted);
+}
+
+/* CARDS */
+
+.cards {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.card {
+  background: linear-gradient(145deg, #0b2940, #061827);
+  border: 1px solid #164360;
+  border-radius: 10px;
+  overflow: hidden;
+  transition: .25s;
+}
+
+.card:hover {
+  transform: translateY(-4px);
+  border-color: #00baff;
+  box-shadow: 0 8px 25px #008bca22;
+}
+
+.card-art {
+  height: 115px;
+  margin: 9px;
+  border-radius: 8px;
+  background:
+    radial-gradient(circle at 50% 40%, #0879bd, #073251 60%, #041725);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #d5f7ff;
+  font-size: 31px;
+  font-weight: 1000;
+  font-style: italic;
+  text-shadow: 0 0 15px #00baff;
+}
+
+.card-body {
+  padding: 8px 14px 15px;
+}
+
+.card h3 {
+  font-size: 15px;
+  margin: 0 0 7px;
+}
+
+.card p {
+  color: #9fb6c8;
+  font-size: 12px;
+  line-height: 1.5;
+  margin: 0;
+}
+
+/* PROJECT PAGES */
+
+.page {
+  display: none;
+}
+
+.page.active {
+  display: block;
+}
+
+.details {
+  display: grid;
+  grid-template-columns: minmax(0, 1.3fr) minmax(240px, .7fr);
+  gap: 17px;
+}
+
+.info-panel {
+  background: linear-gradient(145deg, #0b2336, #061624);
+  border: 1px solid #17425d;
+  border-radius: 10px;
+  padding: 21px;
+  min-width: 0;
+}
+
+.info-panel h2 {
+  margin: 0 0 15px;
+  font-size: 18px;
+}
+
+.info-panel p {
+  color: #b5c9d9;
+  line-height: 1.75;
+}
+
+.spec {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+  border-bottom: 1px solid #18374b;
+  padding: 11px 0;
+  color: #a9c0d0;
+  font-size: 12px;
+}
+
+.spec strong {
+  color: #e6f5ff;
+  font-weight: 600;
+  text-align: right;
+}
+
+.notice {
+  font-size: 12px;
+  color: #829caf;
+  margin-top: 15px;
+}
+
+.page-button {
+  margin-top: 12px;
+}
+
+/* NEWS */
+
+.news-panel {
+  background: linear-gradient(145deg, #0c2b42, #061827);
+  border: 1px solid #175078;
+  border-radius: 10px;
+  padding: 25px;
+}
+
+.news-panel h2 {
+  margin-top: 0;
+}
+
+.news-panel p {
+  color: #c0d3e1;
+  line-height: 1.7;
+}
+
+/* FOOTER */
+
+footer {
+  border-top: 1px solid #15364b;
+  margin-top: 35px;
+  padding: 20px 0;
+  color: #7792a7;
+  font-size: 12px;
+}
+
+/* MOBILE */
+
+@media(max-width: 900px) {
+  .layout {
+    grid-template-columns: 1fr;
+  }
+
+  .side {
+    display: none;
+  }
+
+  .top {
+    padding: 0 12px;
+    gap: 10px;
+  }
+
+  .brand {
+    font-size: 21px;
+  }
+
+  .nav {
+    gap: 3px;
+  }
+
+  .nav button {
+    padding: 10px 9px;
+    font-size: 12px;
+  }
+
+  .profile {
+    display: none;
+  }
+
+  main {
+    padding: 17px 13px 35px;
+  }
+
+  .hero {
+    min-height: 350px;
+    padding: 24px;
+  }
+
+  .hero:after {
+    right: -15px;
+    opacity: .3;
+  }
+
+  .cards {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .details {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media(max-width: 550px) {
+  .top {
+    height: auto;
+    min-height: 60px;
+    flex-wrap: wrap;
+    padding: 10px;
+  }
+
+  .brand {
+    width: 100%;
+  }
+
+  .nav {
+    width: 100%;
+  }
+
+  .nav button {
+    flex: 1;
+  }
+
+  .hero h1 {
+    font-size: 32px;
+  }
+
+  .hero {
+    min-height: 390px;
+  }
+
+  .cards {
+    grid-template-columns: 1fr;
+  }
+
+  .section-head {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .spec {
+    flex-direction: column;
+  }
+
+  .spec strong {
+    text-align: left;
+  }
+}
 </style>
 </head>
+
 <body>
 <div class="shell">
+
 <header class="top">
-  <a class="brand" href="#" onclick="showPage('store');return false">TURBO<span>PLAY</span></a>
+  <a class="brand" href="#" onclick="showPage('store');return false">
+    TURBO<span> PLAY</span>
+  </a>
+
   <nav class="nav">
-    <button class="active" data-page="store">Магазин</button>
-    <button data-page="library">Библиотека</button>
-    <button data-page="news">Новости</button>
+    <button class="active" data-page="store">🛒 Магазин</button>
+    <button data-page="library">◧ Библиотека</button>
+    <button data-page="news">▤ Новости</button>
   </nav>
-  <div class="profile">● &nbsp; Гость &nbsp;⌄</div>
+
+  <div class="profile">♟ Гость &nbsp;⌄</div>
 </header>
+
 <div class="layout">
+
 <aside class="side">
-  <h3>Обзор</h3>
+  <h3>ОБЗОР</h3>
+
   <button class="active" data-page="store">⌂ &nbsp; Главная</button>
-  <button data-page="library">▣ &nbsp; Библиотека</button>
+  <button data-page="library">🎮 &nbsp; Библиотека</button>
   <button data-page="news">▤ &nbsp; Новости</button>
+
   <div class="tiny">ВАША БИБЛИОТЕКА</div>
-  <button data-page="winos">▰ &nbsp; Win OS</button>
-  <button data-page="bsco">▣ &nbsp; BS:CO</button>
-  <div class="tiny">TURBO PLAY</div>
+
+  <button data-page="winos">🪟 &nbsp; Win OS</button>
+  <button data-page="bsco">♟ &nbsp; BS:CO</button>
+
+  <div class="slogan">
+    Играй. Скачивай.<br>
+    Открывай новое!
+  </div>
 </aside>
+
 <main>
-  <section class="page active" id="store">
-    <div class="tabs">
-      <button class="tab active" data-page="store">Рекомендуем</button>
-      <button class="tab" data-page="winos">Программы</button>
-      <button class="tab" data-page="news">Обновления</button>
-    </div>
-    <div class="hero">
-      <div class="window-art"><div class="window-bar"><i></i><i></i><i></i></div><div class="window-grid"><div class="window-side"></div><div class="window-main"><b>TURBO PLAY</b><span></span></div></div></div>
-      <div class="hero-copy">
-        <div class="eyebrow">В центре внимания</div>
-        <h1>Твоя игровая<br>и цифровая зона</h1>
-        <p>Добро пожаловать в Turbo Play — место, где собраны проекты, обновления и полезные программы. Открой страницу Win OS, чтобы узнать больше.</p>
-        <div class="actions"><button class="primary" onclick="showPage('winos')">Открыть Win OS&nbsp; →</button><button class="secondary" onclick="showPage('news')">Последние новости</button></div>
-      </div>
-    </div>
-    <div class="section-head"><h2>Подборка Turbo Play</h2><span class="muted">Избранные проекты</span></div>
-    <div class="cards">
-      <article class="card"><div class="card-art">WIN OS</div><div class="card-body"><h3>Win OS</h3><p>Информация о проекте, описание и загрузка.</p></div></article>
-      <article class="card"><div class="card-art">TP</div><div class="card-body"><h3>Turbo Play</h3><p>Единая площадка для ваших приложений и игр.</p></div></article>
-      <article class="card"><div class="card-art">NEWS</div><div class="card-body"><h3>Новости проекта</h3><p>Следите за новыми версиями и объявлениями.</p></div></article>
-    </div>
-  </section>
 
-  <section class="page" id="winos">
-    <div class="tabs"><button class="tab" data-page="store">Магазин</button><button class="tab active" data-page="winos">Win OS</button></div>
-    <div class="hero">
-      <div class="window-art"><div class="window-bar"><i></i><i></i><i></i></div><div class="window-grid"><div class="window-side"></div><div class="window-main"><b>WIN OS</b><span></span></div></div></div>
-      <div class="hero-copy">
-        <div class="eyebrow">Проект · Mafore Entertainment</div>
-        <h1>Win OS</h1>
-        <p>Win OS — проект для пользователей, которым интересны собственная цифровая среда, приложения и игровые возможности.</p>
-        <div class="actions"><!-- TODO: В будущем добавить сюда рабочую ссылку на скачивание Win OS.
-     Для активации заменить span на ссылку:
-     <a class="primary" href="ССЫЛКА_НА_ФАЙЛ" download>↓ &nbsp; Скачать Win OS</a>
--->
-<span class="primary" aria-disabled="true">↓ &nbsp; Скоро...</span><a class="secondary" href="https://vk.ru/topic-241007421_69975256?offset=0" target="_blank" rel="noopener">Страница проекта ↗</a></div>
-      </div>
-    </div>
-    <div class="section-head"><h2>Об этом проекте</h2><span class="muted">Win OS</span></div>
-    <div class="details">
-      <div class="info-panel">
-        <h2>Описание Win OS</h2>
-        <!-- EDIT: WIN OS DESCRIPTION — меняйте текст описания проекта в этом блоке -->
-        <p>Win OS — лёгкий Windows-эмулятор в одном EXE-файле без установки и перезагрузки. Обеспечивает изолированную среду, защиту данных, очистку временных файлов и удобный запуск приложений.</p></p>Ивенты:</p></p>Helloween с 26.10 по 05.11</p></p>New Year’s Eve с 26.12 по 15.01</p>
-       
-        <!-- END EDIT: WIN OS DESCRIPTION -->
-      </div>
-      <div class="info-panel">
-        <h2>Информация</h2>
-        <div class="spec"><span>Название</span><strong>Win OS</strong></div>
-        <div class="spec"><span>Разработчик</span><strong>Mafore Entertainment</strong></div>
-        <div class="spec"><span>Платформа</span><strong>Windows</strong></div>
-        <div class="spec"><span>Загрузка</span><strong>Setup.exe</strong></div>
-        <div class="spec"><span>Версия</span><strong>27H1.beta</strong></div>
-		<div class="spec"><span>Минимальные системные требования</span><strong></strong></div>
-		<div class="spec"><span>Процессор</span><strong>Intel Core 2 Quad Q8300</strong></div>
-		<div class="spec"><span>Операционная система</span><strong>Windows 7-11</strong></div>
-		<div class="spec"><span>ОЗУ</span><strong>2 ГБ</strong></div>
-		<div class="spec"><span>Видеокарта</span><strong>NVIDIA GT 710</strong></div>
-		<div class="spec"><span>Интернет-Соединение</span><strong>Необходимо</strong></div>
-		<div class="spec"><span>DirectX</span><strong>Версия 9</strong></div>
-		<div class="spec"><span>Рекомендуемые системные требования</span><strong></strong></div>
-		<div class="spec"><span>Процессор</span><strong>Intel Core i3-7100 </strong></div>
-		<div class="spec"><span>Операционная система</span><strong>Windows 10-11</strong></div>
-		<div class="spec"><span>ОЗУ</span><strong>4 ГБ</strong></div>
-		<div class="spec"><span>Видеокарта</span><strong> NVIDIA GeForce GTX 750</strong></div>
-		<div class="spec"><span>Интернет-Соединение</span><strong>Необходимо</strong></div>
-		<div class="spec"><span>DirectX</span><strong>Версия 11</strong></div>
-      </div>
-    </div>
-  </section>
+<!-- STORE -->
 
-  <section class="page" id="bsco">
-    <div class="tabs"><button class="tab" data-page="store">Магазин</button><button class="tab active" data-page="bsco">BS:CO</button></div>
-    <div class="hero">
-      <div class="window-art"><div class="window-bar"><i></i><i></i><i></i></div><div class="window-grid"><div class="window-side"></div><div class="window-main"><b>BS:CO</b><span></span></div></div></div>
-      <div class="hero-copy">
-        <div class="eyebrow">Игра · Mafore Studio</div>
-        <h1>Block-Strike:<br>Classic Offensive</h1>
-        <p>Динамичный многопользовательский шутер с видом сверху для Windows. Сражайтесь командами, играйте онлайн или против искусственного интеллекта.</p>
-        <div class="actions"><a class="primary" href="https://bsco.tilda.ws/" target="_blank" rel="noopener">↓ &nbsp; Скачать игру</a><a class="secondary" href="https://bsco.tilda.ws/" target="_blank" rel="noopener">Официальный сайт ↗</a></div>
-      </div>
-    </div>
-    <div class="section-head"><h2>Об этой игре</h2><span class="muted">Block-Strike: Classic Offensive</span></div>
-    <div class="details">
-      <div class="info-panel">
-        <h2>Описание BS:CO</h2>
-        <p>Это динамичный многопользовательский шутер с видом сверху для Windows. Две команды сражаются друг с другом в напряжённых матчах. Доступны различные игровые режимы. Играйте онлайн или против искусственного интеллекта.</p>
-        <p>В игре можно играть с ботами, играть по сети, повышать своё звание и уровень.</p>
-        <p class="notice">Если вы впервые зашли в игру, при входе в аккаунт нажмите кнопку «Сохраниться». Добавьте лаунчер игры в исключения антивируса. По информации разработчика, в игре нет вирусов.</p>
-      </div>
-      <div class="info-panel">
-        <h2>Информация и системные требования</h2>
-        <div class="spec"><span>Название</span><strong>Block-Strike: Classic Offensive</strong></div>
-        <div class="spec"><span>Разработчик</span><strong>Mafore Studio</strong></div>
-        <div class="spec"><span>Платформа</span><strong>Windows</strong></div>
-        <div class="spec"><span>Версия</span><strong>1.4.4</strong></div>
-        <div class="spec"><span>Операционная система</span><strong>Windows 7, 8, 10, 11</strong></div>
-        <div class="spec"><span>Процессор</span><strong>Intel Core i2 (&lt; и &gt;)</strong></div>
-        <div class="spec"><span>Оперативная память</span><strong>2 GB</strong></div>
-        <div class="spec"><span>Видеокарта</span><strong>1 GB</strong></div>
-        <div class="spec"><span>DirectX</span><strong>Версия 9+</strong></div>
-        <div class="spec"><span>Место на диске</span><strong>200+ MB</strong></div>
-        <div class="spec"><span>Дата выпуска</span><strong>10.10.2021</strong></div>
-        <div class="spec"><span>Последнее обновление</span><strong>07.08.2022</strong></div>
-      </div>
-    </div>
-  </section>
+<section class="page active" id="store">
 
-  <section class="page" id="library">
-    <div class="section-head"><h2>Библиотека</h2><span class="muted">Ваши проекты</span></div>
-    <div class="cards">
-      <article class="card"><div class="card-art">WIN OS</div><div class="card-body"><h3>Win OS</h3><p>Откройте страницу проекта, чтобы прочитать описание и скачать архив.</p><button class="secondary" style="margin-top:12px" onclick="showPage('winos')">Подробнее</button></div></article>
-      <article class="card"><div class="card-art">BS:CO</div><div class="card-body"><h3>Block-Strike: Classic Offensive</h3><p>Динамичный многопользовательский шутер для Windows. Версия 1.4.4.</p><button class="secondary" style="margin-top:12px" onclick="showPage('bsco')">Подробнее</button></div></article>
+  <div class="tabs">
+    <button class="tab active" data-page="store">Рекомендуем</button>
+    <button class="tab" data-page="winos">Программы</button>
+    <button class="tab" data-page="news">Обновления</button>
+  </div>
+
+  <div class="hero">
+    <div class="hero-copy">
+      <div class="eyebrow">TURBO PLAY</div>
+
+      <h1>Твоя игровая<br>
+      <span>и цифровая зона</span></h1>
+
+      <p>
+        Добро пожаловать в Turbo Play — место, где собраны проекты,
+        обновления и полезные программы. Открой страницу Win OS,
+        чтобы узнать больше.
+      </p>
+
+      <div class="actions">
+        <button class="primary" onclick="showPage('winos')">
+          ▦ &nbsp; Открыть Win OS →
+        </button>
+
+        <button class="secondary" onclick="showPage('news')">
+          ▤ &nbsp; Последние новости
+        </button>
+      </div>
     </div>
-  </section>
-  <section class="page" id="news">
-    <div class="section-head"><h2>Новости</h2><span class="muted">Обновления Turbo Play</span></div>
-    <div class="info-panel"><h2>Добро пожаловать в Turbo Play</h2><p>Win OS</p><p>- Скоро...</p><p>BS:CO</p><p>- Прекращена поддержка, но работают сервера.</p><a href="https://vk.ru/mafore_entertainment" target="_blank" rel="noopener" class="secondary">Перейти в сообщество ↗</a></div>
-  </section>
-  <footer>Turbo Play · Mafore Entertainment</footer>
+  </div>
+
+  <div class="section-head">
+    <h2>Подборка Turbo Play</h2>
+    <span class="muted">Избранные проекты</span>
+  </div>
+
+  <div class="cards">
+
+    <article class="card">
+      <div class="card-art">▦ WIN OS</div>
+      <div class="card-body">
+        <h3>Win OS</h3>
+        <p>Информация о проекте, описание и загрузка.</p>
+        <button class="secondary page-button" onclick="showPage('winos')">
+          Подробнее →
+        </button>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="card-art">TURBO PLAY</div>
+      <div class="card-body">
+        <h3>Turbo Play</h3>
+        <p>Единая площадка для ваших приложений и игр.</p>
+        <button class="secondary page-button" onclick="showPage('library')">
+          Подробнее →
+        </button>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="card-art">▤ NEWS</div>
+      <div class="card-body">
+        <h3>Новости проекта</h3>
+        <p>Следите за новыми версиями и объявлениями.</p>
+        <button class="secondary page-button" onclick="showPage('news')">
+          Подробнее →
+        </button>
+      </div>
+    </article>
+
+  </div>
+</section>
+
+<!-- WIN OS -->
+
+<section class="page" id="winos">
+
+  <div class="tabs">
+    <button class="tab" data-page="store">Магазин</button>
+    <button class="tab active" data-page="winos">Win OS</button>
+  </div>
+
+  <div class="hero">
+    <div class="hero-copy">
+      <div class="eyebrow">Проект · Mafore Entertainment</div>
+
+      <h1>Win OS</h1>
+
+      <p>
+        Win OS — проект для пользователей, которым интересны
+        собственная цифровая среда, приложения и игровые возможности.
+      </p>
+
+      <div class="actions">
+        <!-- TODO: В будущем добавить сюда рабочую ссылку на скачивание Win OS.
+             Для активации заменить span на ссылку:
+             <a class="primary" href="ССЫЛКА_НА_ФАЙЛ" download>↓ &nbsp; Скачать Win OS</a>
+        -->
+
+        <span class="primary" aria-disabled="true">↓ &nbsp; Скоро...</span>
+
+        <a class="secondary"
+           href="https://vk.ru/topic-241007421_69975256?offset=0"
+           target="_blank" rel="noopener">
+          Страница проекта ↗
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-head">
+    <h2>Об этом проекте</h2>
+    <span class="muted">Win OS</span>
+  </div>
+
+  <div class="details">
+
+    <div class="info-panel">
+      <h2>Описание Win OS</h2>
+
+      <!-- EDIT: WIN OS DESCRIPTION -->
+      <p>
+        Win OS — лёгкий Windows-эмулятор в одном EXE-файле без установки
+        и перезагрузки. Обеспечивает изолированную среду, защиту данных,
+        очистку временных файлов и удобный запуск приложений.
+      </p>
+
+      <p>Ивенты:</p>
+      <p>Helloween с 26.10 по 05.11</p>
+      <p>New Year’s Eve с 26.12 по 15.01</p>
+      <!-- END EDIT: WIN OS DESCRIPTION -->
+
+    </div>
+
+    <div class="info-panel">
+      <h2>Информация</h2>
+
+      <div class="spec"><span>Название</span><strong>Win OS</strong></div>
+      <div class="spec"><span>Разработчик</span><strong>Mafore Entertainment</strong></div>
+      <div class="spec"><span>Платформа</span><strong>Windows</strong></div>
+      <div class="spec"><span>Загрузка</span><strong>Setup.exe</strong></div>
+      <div class="spec"><span>Версия</span><strong>27H1.beta</strong></div>
+
+      <div class="spec"><span>Минимальные системные требования</span><strong></strong></div>
+      <div class="spec"><span>Процессор</span><strong>Intel Core 2 Quad Q8300</strong></div>
+      <div class="spec"><span>Операционная система</span><strong>Windows 7-11</strong></div>
+      <div class="spec"><span>ОЗУ</span><strong>2 ГБ</strong></div>
+      <div class="spec"><span>Видеокарта</span><strong>NVIDIA GT 710</strong></div>
+      <div class="spec"><span>Интернет-Соединение</span><strong>Необходимо</strong></div>
+      <div class="spec"><span>DirectX</span><strong>Версия 9</strong></div>
+
+      <div class="spec"><span>Рекомендуемые системные требования</span><strong></strong></div>
+      <div class="spec"><span>Процессор</span><strong>Intel Core i3-7100 </strong></div>
+      <div class="spec"><span>Операционная система</span><strong>Windows 10-11</strong></div>
+      <div class="spec"><span>ОЗУ</span><strong>4 ГБ</strong></div>
+      <div class="spec"><span>Видеокарта</span><strong> NVIDIA GeForce GTX 750</strong></div>
+      <div class="spec"><span>Интернет-Соединение</span><strong>Необходимо</strong></div>
+      <div class="spec"><span>DirectX</span><strong>Версия 11</strong></div>
+    </div>
+
+  </div>
+</section>
+
+<!-- BS:CO -->
+
+<section class="page" id="bsco">
+
+  <div class="tabs">
+    <button class="tab" data-page="store">Магазин</button>
+    <button class="tab active" data-page="bsco">BS:CO</button>
+  </div>
+
+  <div class="hero">
+    <div class="hero-copy">
+      <div class="eyebrow">Игра · Mafore Studio</div>
+
+      <h1>Block-Strike:<br>Classic Offensive</h1>
+
+      <p>
+        Динамичный многопользовательский шутер с видом сверху
+        для Windows. Сражайтесь командами, играйте онлайн или
+        против искусственного интеллекта.
+      </p>
+
+      <div class="actions">
+        <a class="primary" href="https://bsco.tilda.ws/"
+           target="_blank" rel="noopener">
+          ↓ &nbsp; Скачать игру
+        </a>
+
+        <a class="secondary" href="https://bsco.tilda.ws/"
+           target="_blank" rel="noopener">
+          Официальный сайт ↗
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-head">
+    <h2>Об этой игре</h2>
+    <span class="muted">Block-Strike: Classic Offensive</span>
+  </div>
+
+  <div class="details">
+
+    <div class="info-panel">
+      <h2>Описание BS:CO</h2>
+
+      <p>
+        Это динамичный многопользовательский шутер с видом сверху
+        для Windows. Две команды сражаются друг с другом в напряжённых
+        матчах. Доступны различные игровые режимы. Играйте онлайн
+        или против искусственного интеллекта.
+      </p>
+
+      <p>
+        В игре можно играть с ботами, играть по сети,
+        повышать своё звание и уровень.
+      </p>
+
+      <p class="notice">
+        Если вы впервые зашли в игру, при входе в аккаунт нажмите
+        кнопку «Сохраниться». Добавьте лаунчер игры в исключения
+        антивируса. По информации разработчика, в игре нет вирусов.
+      </p>
+    </div>
+
+    <div class="info-panel">
+      <h2>Информация и системные требования</h2>
+
+      <div class="spec"><span>Название</span><strong>Block-Strike: Classic Offensive</strong></div>
+      <div class="spec"><span>Разработчик</span><strong>Mafore Studio</strong></div>
+      <div class="spec"><span>Платформа</span><strong>Windows</strong></div>
+      <div class="spec"><span>Версия</span><strong>1.4.4</strong></div>
+      <div class="spec"><span>Операционная система</span><strong>Windows 7, 8, 10, 11</strong></div>
+      <div class="spec"><span>Процессор</span><strong>Intel Core i2 (&lt; и &gt;)</strong></div>
+      <div class="spec"><span>Оперативная память</span><strong>2 GB</strong></div>
+      <div class="spec"><span>Видеокарта</span><strong>1 GB</strong></div>
+      <div class="spec"><span>DirectX</span><strong>Версия 9+</strong></div>
+      <div class="spec"><span>Место на диске</span><strong>200+ MB</strong></div>
+      <div class="spec"><span>Дата выпуска</span><strong>10.10.2021</strong></div>
+      <div class="spec"><span>Последнее обновление</span><strong>07.08.2022</strong></div>
+    </div>
+
+  </div>
+</section>
+
+<!-- LIBRARY -->
+
+<section class="page" id="library">
+
+  <div class="section-head">
+    <h2>Библиотека</h2>
+    <span class="muted">Ваши проекты</span>
+  </div>
+
+  <div class="cards">
+
+    <article class="card">
+      <div class="card-art">▦ WIN OS</div>
+      <div class="card-body">
+        <h3>Win OS</h3>
+        <p>Откройте страницу проекта, чтобы прочитать описание и скачать архив.</p>
+        <button class="secondary page-button" onclick="showPage('winos')">
+          Подробнее
+        </button>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="card-art">BS:CO</div>
+      <div class="card-body">
+        <h3>Block-Strike: Classic Offensive</h3>
+        <p>Динамичный многопользовательский шутер для Windows. Версия 1.4.4.</p>
+        <button class="secondary page-button" onclick="showPage('bsco')">
+          Подробнее
+        </button>
+      </div>
+    </article>
+
+  </div>
+</section>
+
+<!-- NEWS -->
+
+<section class="page" id="news">
+
+  <div class="section-head">
+    <h2>Новости</h2>
+    <span class="muted">Обновления Turbo Play</span>
+  </div>
+
+  <div class="news-panel">
+
+    <h2>Добро пожаловать в Turbo Play</h2>
+
+    <p>Win OS</p>
+    <p>- Скоро...</p>
+
+    <p>BS:CO</p>
+    <p>- Прекращена поддержка, но работают сервера.</p>
+
+    <a href="https://vk.ru/mafore_entertainment"
+       target="_blank" rel="noopener"
+       class="secondary">
+      Перейти в сообщество ↗
+    </a>
+
+  </div>
+</section>
+
+<footer>
+  Turbo Play · Mafore Entertainment
+</footer>
+
 </main>
 </div>
 </div>
+
 <script>
-// EDIT: NAVIGATION — логика переключения вкладок и страниц
-function showPage(id){
-  document.querySelectorAll('.page').forEach(p=>p.classList.toggle('active',p.id===id));
-  document.querySelectorAll('[data-page]').forEach(b=>b.classList.toggle('active',b.dataset.page===id));
-  window.scrollTo({top:0,behavior:'smooth'});
+// NAVIGATION
+
+function showPage(id) {
+  document.querySelectorAll('.page').forEach(p => {
+    p.classList.toggle('active', p.id === id);
+  });
+
+  document.querySelectorAll('[data-page]').forEach(b => {
+    b.classList.toggle('active', b.dataset.page === id);
+  });
+
+  window.scrollTo({
+    top: 0,
+    behavior: 'smooth'
+  });
 }
-document.querySelectorAll('[data-page]').forEach(b=>b.addEventListener('click',()=>showPage(b.dataset.page)));
-// END EDIT: NAVIGATION
+
+document.querySelectorAll('[data-page]').forEach(b => {
+  b.addEventListener('click', () => {
+    showPage(b.dataset.page);
+  });
+});
+
 </script>
+
 </body>
 </html>
